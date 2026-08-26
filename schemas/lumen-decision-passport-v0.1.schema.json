@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://cognos.example/schemas/lumen-decision-passport-v0.1.schema.json",
+  "$id": "urn:cognos:lumen:decision-passport:v0.1",
   "title": "CognOS LUMEN Decision Passport v0.1",
   "type": "object",
   "additionalProperties": false,
