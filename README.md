@@ -97,3 +97,26 @@ The framework is under active definition. Public documents describe principles a
 ## Author
 
 Created by **Ennio Princi** — AI Systems Architect, Agile Coach and designer of explainable Decision Intelligence systems.
+
+## Truth Center and LUMEN v0.1
+
+The first executable constitutional profile implements the authorial principle:
+
+> «La verità sta al centro.» — Ennio Princi
+
+It connects proportional governance to the entropic imprint of an action and crystallizes verified actions as portable Decision Passports.
+
+- [Truth Center Doctrine v0.1](docs/constitutional/TRUTH_CENTER_DOCTRINE_v0.1.md)
+- [LUMEN Decision Passport protocol v0.1](docs/protocols/LUMEN_DECISION_PASSPORT_v0.1.md)
+- [Decision Passport JSON Schema](schemas/lumen-decision-passport-v0.1.schema.json)
+- [Reference Decision Passport](examples/lumen-decision-passport-v0.1.example.json)
+- [Dependency-free verifier](reference/lumen_verify.py)
+- [Verifier tests](tests/test_lumen_verify.py)
+
+Run the reference checks with:
+
+```bash
+python3 -m unittest discover -s tests -v
+python3 reference/lumen_verify.py examples/lumen-decision-passport-v0.1.example.json --allow-zero-digest
+```
+

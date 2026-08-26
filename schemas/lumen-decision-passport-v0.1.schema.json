@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cognos.example/schemas/lumen-decision-passport-v0.1.schema.json",
+  "title": "CognOS LUMEN Decision Passport v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "decision_id", "recorded_at", "intent", "truth_claim", "imprint", "evidence", "governance", "execution", "integrity"],
+  "properties": {
+    "schema_version": {"const": "cognos.lumen.decision-passport.v0.1"},
+    "decision_id": {"type": "string", "minLength": 12, "maxLength": 200},
+    "recorded_at": {"type": "string", "format": "date-time"},
+    "supersedes": {"type": ["string", "null"]},
+    "intent": {
+      "type": "object", "additionalProperties": false,
+      "required": ["actor_id", "statement", "contract_sha256"],
+      "properties": {
+        "actor_id": {"type": "string", "minLength": 1},
+        "statement": {"type": "string", "minLength": 1},
+        "contract_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "truth_claim": {
+      "type": "object", "additionalProperties": false,
+      "required": ["statement", "status", "center_basis", "uncertainty"],
+      "properties": {
+        "statement": {"type": "string", "minLength": 1},
+        "status": {"enum": ["raw_signal", "hypothesis", "provisional", "verified", "superseded", "rejected"]},
+        "center_basis": {"type": "string", "minLength": 1},
+        "uncertainty": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "imprint": {
+      "type": "object", "additionalProperties": false,
+      "required": ["scope", "impact", "irreversibility", "entropy", "weight", "tier"],
+      "properties": {
+        "scope": {"$ref": "#/$defs/unit"},
+        "impact": {"$ref": "#/$defs/unit"},
+        "irreversibility": {"$ref": "#/$defs/unit"},
+        "entropy": {"$ref": "#/$defs/unit"},
+        "weight": {"$ref": "#/$defs/unit"},
+        "tier": {"enum": ["clay", "rough", "cut", "diamond"]}
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["evidence_id", "uri", "sha256", "observed_at", "provenance"],
+        "properties": {
+          "evidence_id": {"type": "string", "minLength": 1},
+          "uri": {"type": "string", "minLength": 1},
+          "sha256": {"$ref": "#/$defs/sha256"},
+          "observed_at": {"type": "string", "format": "date-time"},
+          "provenance": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "governance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["decision", "policy_refs", "approval"],
+      "properties": {
+        "decision": {"enum": ["deny", "ask", "allow"]},
+        "policy_refs": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "approval": {
+          "type": "object", "additionalProperties": false,
+          "required": ["required", "status", "scope_digest", "expires_at"],
+          "properties": {
+            "required": {"type": "boolean"},
+            "status": {"enum": ["not_required", "pending", "approved", "denied", "expired", "revoked"]},
+            "scope_digest": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+            "expires_at": {"type": ["string", "null"], "format": "date-time"}
+          }
+        }
+      }
+    },
+    "execution": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "tool", "arguments_sha256", "result_sha256"],
+      "properties": {
+        "status": {"enum": ["not_started", "blocked", "completed", "failed", "compensated"]},
+        "tool": {"type": ["string", "null"]},
+        "arguments_sha256": {"anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+        "result_sha256": {"anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]}
+      }
+    },
+    "integrity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["algorithm", "content_sha256"],
+      "properties": {
+        "algorithm": {"const": "sha256"},
+        "content_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "unit": {"type": "number", "minimum": 0, "maximum": 1}
+  }
+}
