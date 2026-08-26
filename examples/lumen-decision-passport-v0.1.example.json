@@ -1,0 +1,54 @@
+{
+  "schema_version": "cognos.lumen.decision-passport.v0.1",
+  "decision_id": "cognos://decision/demo-receipt-20260826-001",
+  "recorded_at": "2026-08-26T12:00:00Z",
+  "supersedes": null,
+  "intent": {
+    "actor_id": "human:operator",
+    "statement": "Validate the captured receipt proposal without committing an operational write.",
+    "contract_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "truth_claim": {
+    "statement": "The proposal is structurally valid and remains pending operator approval.",
+    "status": "provisional",
+    "center_basis": "Receipt hash, proposal envelope, schema validation and fail-closed policy outcome.",
+    "uncertainty": 0.2
+  },
+  "imprint": {
+    "scope": 0.5,
+    "impact": 0.4,
+    "irreversibility": 0.3,
+    "entropy": 0.5,
+    "weight": 0.03,
+    "tier": "clay"
+  },
+  "evidence": [
+    {
+      "evidence_id": "receipt-photo",
+      "uri": "local://redacted/receipt-photo",
+      "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "observed_at": "2026-08-26T11:58:00Z",
+      "provenance": "Operator-captured photo; raw content retained locally."
+    }
+  ],
+  "governance": {
+    "decision": "ask",
+    "policy_refs": ["TRUTH-CENTER-001", "ENTROPIC-IMPRINT-002", "SINCERITY-003"],
+    "approval": {
+      "required": true,
+      "status": "pending",
+      "scope_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "expires_at": "2026-08-27T12:00:00Z"
+    }
+  },
+  "execution": {
+    "status": "not_started",
+    "tool": null,
+    "arguments_sha256": null,
+    "result_sha256": null
+  },
+  "integrity": {
+    "algorithm": "sha256",
+    "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
+}
