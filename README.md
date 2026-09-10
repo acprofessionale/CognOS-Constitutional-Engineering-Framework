@@ -120,3 +120,21 @@ python3 -m unittest discover -s tests -v
 python3 reference/lumen_verify.py examples/lumen-decision-passport-v0.1.example.json --allow-zero-digest
 ```
 
+## Public civic manifesto — Aristocratica GrandE Veritas & Bellezza
+
+A public cultural/civic layer now develops the same authorial center — **«La verità sta al centro»** — toward social responsibility, pluralism, writing, evidence and the dignity of peoples.
+
+**Aristocratica** is used here as an ethical aspiration toward the best qualities in public life, not as hereditary privilege or hierarchy between peoples. The sinking “cachistocracy” vessel is explicitly metaphorical: the target is a principle of bad governance, never people.
+
+- [Aristocratica GrandE Veritas & Bellezza — Manifesto v1.0](docs/public/aristocratica-grande-veritas-bellezza/README.md)
+- [Multilingual Share Kit — IT / DE / EN / FR / ES / PT / AR / RU / ZH](docs/public/aristocratica-grande-veritas-bellezza/SHARE-KIT.md)
+- [The Word and Writing Systems](docs/public/aristocratica-grande-veritas-bellezza/WORD-AND-WRITING-SYSTEMS.md)
+- [Sources and Evidence](docs/public/aristocratica-grande-veritas-bellezza/SOURCES.md)
+
+Canonical social routing code:
+
+```text
+AGVB://CENTER
+```
+
+This manifesto is an authored public cultural document. It does **not** modify CCEF runtime authority, policy semantics or constitutional invariants unless a separate governed decision explicitly ratifies such a change.
