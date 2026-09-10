@@ -1,5 +1,7 @@
 # Aristocratica GrandE Veritas & Bellezza
 
+![Poster — Aristocratica GrandE Veritas & Bellezza](media/AGVB-poster-v1-preview.jpg)
+
 > **La verità sta al centro.**
 >
 > **Competenza · Responsabilità · Evidenza · Bellezza · Umanità**
