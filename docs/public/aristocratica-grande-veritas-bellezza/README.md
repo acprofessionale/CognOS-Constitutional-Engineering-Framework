@@ -1,5 +1,9 @@
 # Aristocratica GrandE Veritas & Bellezza
 
+![CognOS — immagine guida](media/COGNOS-flow-hero.jpg)
+
+*Immagine guida CognOS.*
+
 ![Poster — Aristocratica GrandE Veritas & Bellezza](media/AGVB-poster-v1-preview.png)
 
 > **La verità sta al centro.**
