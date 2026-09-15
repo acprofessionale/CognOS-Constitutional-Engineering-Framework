@@ -1,6 +1,6 @@
 # Aristocratica GrandE Veritas & Bellezza
 
-![Poster — Aristocratica GrandE Veritas & Bellezza](https://raw.githubusercontent.com/acprofessionale/CognOS-Constitutional-Engineering-Framework/main/docs/public/aristocratica-grande-veritas-bellezza/media/AGVB-poster-v1-preview.jpg)
+![Poster — Aristocratica GrandE Veritas & Bellezza](media/AGVB-poster-v1-preview.png)
 
 > **La verità sta al centro.**
 >
