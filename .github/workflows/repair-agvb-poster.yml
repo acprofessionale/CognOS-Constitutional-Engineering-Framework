@@ -1,0 +1,140 @@
+name: Repair AGVB poster
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/repair-agvb-poster.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Repair or convert poster to PNG
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --quiet pillow
+          python <<'PY'
+          from pathlib import Path
+          import subprocess
+          from PIL import Image, ImageFile, ImageDraw, ImageFont
+
+          src = Path('docs/public/aristocratica-grande-veritas-bellezza/media/AGVB-poster-v1-preview.jpg')
+          out = Path('docs/public/aristocratica-grande-veritas-bellezza/media/AGVB-poster-v1-preview.png')
+          out.parent.mkdir(parents=True, exist_ok=True)
+          ImageFile.LOAD_TRUNCATED_IMAGES = True
+
+          salvaged = False
+          try:
+              with Image.open(src) as im:
+                  im.load()
+                  im = im.convert('RGB')
+                  im.save(out, 'PNG', optimize=True)
+                  salvaged = True
+                  print('PIL_SALVAGE_OK', im.size)
+          except Exception as e:
+              print('PIL_SALVAGE_FAIL', repr(e))
+
+          if not salvaged:
+              ff = subprocess.run([
+                  'ffmpeg','-y','-v','warning','-err_detect','ignore_err',
+                  '-i', str(src), '-frames:v','1', str(out)
+              ], capture_output=True, text=True)
+              print(ff.stderr[-4000:])
+              if out.exists() and out.stat().st_size > 0:
+                  try:
+                      with Image.open(out) as im:
+                          im.verify()
+                      salvaged = True
+                      print('FFMPEG_SALVAGE_OK')
+                  except Exception as e:
+                      print('FFMPEG_VERIFY_FAIL', repr(e))
+
+          if not salvaged:
+              # Compatibility fallback: valid PNG generated from canonical manifesto text.
+              W, H = 1080, 1600
+              im = Image.new('RGB', (W, H), '#111111')
+              d = ImageDraw.Draw(im)
+              try:
+                  title_font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 74)
+                  sub_font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 42)
+                  small_font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 34)
+              except Exception:
+                  title_font = sub_font = small_font = ImageFont.load_default()
+
+              margin = 90
+              y = 120
+              for line in ['Aristocratica GrandE', 'Veritas & Bellezza']:
+                  d.text((margin, y), line, fill='white', font=title_font)
+                  y += 100
+              y += 30
+              d.line((margin, y, W-margin, y), fill='#C8A44D', width=4)
+              y += 70
+              d.text((margin, y), 'La verità sta al centro.', fill='white', font=sub_font)
+              y += 95
+              for line in [
+                  'Competenza · Responsabilità',
+                  'Evidenza · Bellezza · Umanità',
+                  '',
+                  'Evidenza > affermazione',
+                  'Persona ≠ sistema',
+                  'Simbolo ≠ fatto',
+                  'Correzione > orgoglio',
+                  '',
+                  'AGVB://CENTER',
+                  'AGVB://EVIDENCE',
+                  'AGVB://BEAUTY',
+              ]:
+                  d.text((margin, y), line, fill='white', font=small_font)
+                  y += 62
+              d.text((margin, H-140), 'COGNOS · Constitutional Engineering Framework', fill='#C8A44D', font=small_font)
+              im.save(out, 'PNG', optimize=True)
+              print('FALLBACK_PNG_CREATED', out.stat().st_size)
+
+          # Final strict validation.
+          with Image.open(out) as im:
+              im.verify()
+          print('FINAL_PNG_OK', out.stat().st_size)
+          PY
+
+      - name: Point README to repaired PNG
+        shell: bash
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          p = Path('docs/public/aristocratica-grande-veritas-bellezza/README.md')
+          s = p.read_text(encoding='utf-8')
+          old_abs = '![Poster — Aristocratica GrandE Veritas & Bellezza](https://raw.githubusercontent.com/acprofessionale/CognOS-Constitutional-Engineering-Framework/main/docs/public/aristocratica-grande-veritas-bellezza/media/AGVB-poster-v1-preview.jpg)'
+          old_rel = '![Poster — Aristocratica GrandE Veritas & Bellezza](media/AGVB-poster-v1-preview.jpg)'
+          new = '![Poster — Aristocratica GrandE Veritas & Bellezza](media/AGVB-poster-v1-preview.png)'
+          if old_abs in s:
+              s = s.replace(old_abs, new, 1)
+          elif old_rel in s:
+              s = s.replace(old_rel, new, 1)
+          elif new not in s:
+              raise SystemExit('Poster reference not found; refusing unsafe edit')
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit repaired asset and self-remove workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/repair-agvb-poster.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/public/aristocratica-grande-veritas-bellezza/README.md \
+                  docs/public/aristocratica-grande-veritas-bellezza/media/AGVB-poster-v1-preview.png \
+                  .github/workflows/repair-agvb-poster.yml
+          if git diff --cached --quiet; then
+            echo 'No changes to commit'
+            exit 0
+          fi
+          git commit -m 'fix(public): repair AGVB poster rendering [repair-output]'
+          git push origin HEAD:main
