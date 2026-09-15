@@ -119,11 +119,15 @@ Questo manifesto adotta quattro discipline operative:
 3. **Simbolo ≠ fatto** — arte, metafora e ironia sono dichiarate come tali.
 4. **Correzione > orgoglio** — una formulazione migliore sostituisce una formulazione più debole quando emergono dati nuovi.
 
-## 9. Colonna sonora
+## 9. Colonna sonora — Danza di Shiva
 
 La musica può accompagnare il manifesto, ma non ne costituisce prova o autorità.
 
-[Ascolto suggerito su Spotify](https://open.spotify.com/intl-it/track/0nsFJ7idRy2Jpe6aW6XQYy)
+**Shiva Tandava Stotram — Uma Mohan**
+
+[Ascolto suggerito su Spotify](https://open.spotify.com/track/7uBlKNkY3g9PNxaUFRHKH7)
+
+Il riferimento alla danza di Shiva è qui **simbolico**: movimento, trasformazione, dissoluzione e ricomposizione attorno a un centro che non viene confuso con il caos. Non è presentato come prova, dottrina religiosa o autorità del manifesto.
 
 ## 10. Formula finale
 
@@ -145,6 +149,6 @@ La musica può accompagnare il manifesto, ma non ne costituisce prova o autorit�
 
 **Autore del principio «La verità sta al centro» e del progetto:** Ennio Princi  
 **Contesto:** CognOS Constitutional Engineering Framework  
-**Stato:** Public civic manifesto — v1.0, 2026-09-10
+**Stato:** Public civic manifesto — v1.1, 2026-09-15
 
 Vedi anche: [Fonti ed evidenze](SOURCES.md).
