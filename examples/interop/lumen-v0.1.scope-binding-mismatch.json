@@ -1,0 +1,46 @@
+{
+  "schema_version": "cognos.lumen.decision-passport.v0.1",
+  "decision_id": "cognos://decision/interop-scope-binding-20260916-001",
+  "recorded_at": "2026-09-16T10:00:00Z",
+  "supersedes": null,
+  "intent": {
+    "actor_id": "human:operator",
+    "statement": "Write the approved artifact using the exact authorized tool arguments.",
+    "contract_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "truth_claim": {
+    "statement": "The receipt is content-integrity-valid but the approval is not bound to the executed scope.",
+    "status": "rejected",
+    "center_basis": "The approved scope digest differs from the canonical tool-and-arguments commitment.",
+    "uncertainty": 0.0
+  },
+  "imprint": {
+    "scope": 0.5,
+    "impact": 0.5,
+    "irreversibility": 0.5,
+    "entropy": 0.5,
+    "weight": 0.0625,
+    "tier": "rough"
+  },
+  "evidence": [],
+  "governance": {
+    "decision": "ask",
+    "policy_refs": ["LUMEN-v0.1", "SCOPE-BINDING-NEGATIVE-001"],
+    "approval": {
+      "required": true,
+      "status": "approved",
+      "scope_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "expires_at": "2026-09-16T12:00:00Z"
+    }
+  },
+  "execution": {
+    "status": "completed",
+    "tool": "filesystem.write",
+    "arguments_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "result_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+  },
+  "integrity": {
+    "algorithm": "sha256",
+    "content_sha256": "e00bbc97b6bc9c43fe5276e3a620ec6cac952cae7dd5e497cf8a3a8186e893a5"
+  }
+}
