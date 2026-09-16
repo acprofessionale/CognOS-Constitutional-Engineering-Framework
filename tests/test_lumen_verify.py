@@ -7,7 +7,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "reference"))
 
-from lumen_verify import ZERO_DIGEST, canonical_digest, verify  # noqa: E402
+from lumen_verify import (  # noqa: E402
+    ZERO_DIGEST,
+    canonical_digest,
+    execution_scope_digest,
+    verify,
+)
 
 
 class LumenVerifierTests(unittest.TestCase):
@@ -36,6 +41,20 @@ class LumenVerifierTests(unittest.TestCase):
         invalid["imprint"]["weight"] = 0.9
         errors = verify(invalid, allow_zero_digest=True)
         self.assertTrue(any("weight mismatch" in error for error in errors))
+
+    def test_integrity_valid_but_scope_mismatched_fixture_is_rejected(self):
+        path = ROOT / "examples" / "interop" / "lumen-v0.1.scope-binding-mismatch.json"
+        invalid = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(invalid["integrity"]["content_sha256"], canonical_digest(invalid))
+        errors = verify(invalid)
+        self.assertTrue(any("approval scope mismatch" in error for error in errors))
+
+    def test_matching_scope_binding_is_accepted(self):
+        path = ROOT / "examples" / "interop" / "lumen-v0.1.scope-binding-mismatch.json"
+        valid = json.loads(path.read_text(encoding="utf-8"))
+        valid["governance"]["approval"]["scope_digest"] = execution_scope_digest(valid["execution"])
+        valid["integrity"]["content_sha256"] = canonical_digest(valid)
+        self.assertEqual([], verify(valid))
 
 
 if __name__ == "__main__":
