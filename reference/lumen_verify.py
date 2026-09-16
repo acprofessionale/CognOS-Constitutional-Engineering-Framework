@@ -25,6 +25,17 @@ def canonical_digest(passport: dict[str, Any]) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
+def execution_scope_digest(execution: dict[str, Any]) -> str | None:
+    """Bind an approval to the exact tool name and argument commitment."""
+    tool = execution.get("tool")
+    arguments_sha256 = execution.get("arguments_sha256")
+    if not isinstance(tool, str) or not tool or not isinstance(arguments_sha256, str):
+        return None
+    payload = {"arguments_sha256": arguments_sha256, "tool": tool}
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
 def expected_tier(weight: float) -> str:
     if weight < 0.05:
         return "clay"
@@ -60,8 +71,15 @@ def verify(passport: dict[str, Any], allow_zero_digest: bool = False) -> list[st
     execution = passport["execution"]
     if governance.get("decision") == "deny" and execution.get("status") not in {"not_started", "blocked"}:
         errors.append("constitutional deny cannot have an executed status")
-    if governance.get("decision") == "ask" and execution.get("status") == "completed" and approval.get("status") != "approved":
-        errors.append("completed ASK decision requires approved scope")
+    if governance.get("decision") == "ask" and execution.get("status") == "completed":
+        if approval.get("status") != "approved":
+            errors.append("completed ASK decision requires approved scope")
+        else:
+            expected_scope = execution_scope_digest(execution)
+            if expected_scope is None or approval.get("scope_digest") != expected_scope:
+                errors.append(
+                    "approval scope mismatch: approved scope is not bound to the executed tool and arguments"
+                )
 
     declared_digest = passport["integrity"].get("content_sha256")
     computed_digest = canonical_digest(passport)
