@@ -138,3 +138,7 @@ AGVB://CENTER
 ```
 
 This manifesto is an authored public cultural document. It does **not** modify CCEF runtime authority, policy semantics or constitutional invariants unless a separate governed decision explicitly ratifies such a change.
+
+## Progetti e sostegno / Projects and support
+
+[**CognOS∆ — Progetti e sostegno**](docs/public/progetti-e-sostegno/README.md) raccoglie la presentazione di Ennio Princi / AC Professionale, i materiali pubblici, lo stato dei prototipi e le modalità di sostegno volontario al lavoro. Include una breve sintesi in inglese.
